@@ -7,13 +7,10 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setCars } from '../../redux/Actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCars } from '../../redux/Actions';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-// import { uuid } from 'uuidv4';
-import uuid from 'react-uuid';
-
 export default function CarCruds() {
   const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState();
@@ -29,36 +26,30 @@ export default function CarCruds() {
   const [checkregno, setCheckregno] = useState(false);
   const [regnoerror, setregnoerror] = useState('');
 
+  const { cars, carID } = useSelector(state => state.taskReducer);
+  const dispatch = useDispatch();
 
-  const [obj, setObj] = useState([]);
-  //const { cars, carID } = useSelector(state => state.taskReducer);
-  //const dispatch = useDispatch();
-
-
-
-
-  // const getCars = async () => {
-
-  //   // const Car = cars.find(car => car.ID === carID)
-  //   const Car = await AsyncStorage.getItem('Cars')
-  //   if (Car) {
-  //     setSelectedCategory(Car.category);
-  //     setColor(Car.color);
-  //     setModal(Car.modal);
-  //     setRegno(Car.reg_no)
-  //   }
-
-  // }
 
   useEffect(() => {
 
-    // getCars();
+    getCars();
 
   }, [])
 
+  const getCars = () => {
 
-  const AddCar = async () => {
-    console.log(uuid())
+    const Car = cars.find(car => car.ID === carID)
+    if (Car) {
+      setSelectedCategory(Car.category);
+      setColor(Car.color);
+      setModal(Car.modal);
+      setRegno(Car.reg_no)
+    }
+
+  }
+
+
+  const AddCar = () => {
     if (selectedCategory == '') {
       setCheckcategory(true);
       setcategoryerror('Select Category');
@@ -81,121 +72,32 @@ export default function CarCruds() {
     } else {
       try {
         var Car = {
-          ID: uuid(),
+          ID: carID,
           Category: selectedCategory,
           color: Color,
           modal: Modal,
           reg_no: Regno,
         };
-        console.log('CAr', Car)
-
-        let data = await AsyncStorage.getItem('Cars')
-        console.log('d', data)
-        if (data !== null) {
-          console.log('dd', data)
-
-          setObj(p => [...p, Car])
-          AsyncStorage.setItem('Cars', JSON.stringify(obj))
-            .then(() => {
-              console.log('new', Car)
-              Alert.alert('Success', 'Car Added successfully');
-              navigation.goBack();
-            })
-            .catch(err => console.log(err));
-
+        const index = cars.findIndex(car => car.ID === carID);
+        let newCars = [];
+        if (index > -1) {
+          newCars = [...cars];
+          newTasks[index] = Car;
         } else {
-          console.log('CAr1', Car)
-          AsyncStorage.setItem('Cars', JSON.stringify(Car))
-            .then(() => {
-              console.log('new', Car)
-              Alert.alert('Success', 'Car Added successfully');
-              navigation.goBack();
-            })
-            .catch(err => console.log(err));
+          newTasks = [...cars, Car];
         }
-        // console.log('CAr1', Car)
-
-        // console.log('hh', obj)
-        // AsyncStorage.setItem('Cars', JSON.stringify(obj))
-        //   .then(() => {
-        //     console.log('new', obj)
-        //     Alert.alert('Success', 'Car Added successfully');
-        //     navigation.goBack();
-        //   })
-        //   .catch(err => console.log(err));
-
-
+        AsyncStorage.setItem('Cars', JSON.stringify(newCars))
+          .then(() => {
+            dispatch(setCars(newCars));
+            Alert.alert('Success', 'Car Added successfully');
+            navigation.goBack();
+          })
+          .catch(err => console.log(err));
       } catch (error) {
         console.log(error);
       }
     }
   };
-
-  // const AddCar = async () => {
-  //   if (selectedCategory == '') {
-  //     setCheckcategory(true);
-  //     setcategoryerror('Select Category');
-  //     return false;
-  //   }
-  //   if (Color == '') {
-  //     setCheckcolor(true);
-  //     setcolorerror('Enter Color');
-  //     return false;
-  //   }
-  //   if (Modal == '') {
-  //     setCheckmodal(true);
-  //     setmodalerror('Enter Modal');
-  //     return false;
-  //   }
-  //   if (Regno == '') {
-  //     setCheckregno(true);
-  //     setRegno('Enter Registation number');
-  //     return false;
-  //   } else {
-  //     try {
-  //       var Car = {
-  //         ID: carID,
-  //         Category: selectedCategory,
-  //         color: Color,
-  //         modal: Modal,
-  //         reg_no: Regno,
-  //       };
-  //       console.log('CAr', Car)
-
-  //       let data = await AsyncStorage.getItem('Cars')
-  //       console.log(data)
-  //       // const index = Car.findIndex(car => car.ID === carID);
-  //       // let newCars = [];
-  //       // if (index > -1) {
-  //       //   newCars = [...cars];
-  //       //   newTasks[index] = Car;
-  //       // } else {
-  //       //   newTasks = [...cars, Car];
-  //       // }
-
-  //       // console.log('hh', newCars)
-  //       // AsyncStorage.setItem('Cars', JSON.stringify(Car))
-  //       //   .then(() => {
-  //       //     console.log('new', newCars)
-  //       //     dispatch(setCars(newCars));
-  //       //     Alert.alert('Success', 'Car Added successfully');
-  //       //     navigation.goBack();
-  //       //   })
-  //       //   .catch(err => console.log(err));
-
-  //       // AsyncStorage.setItem('Cars', JSON.stringify(newCars))
-  //       //   .then(() => {
-  //       //     console.log('new', newCars)
-  //       //     dispatch(setCars(newCars));
-  //       //     Alert.alert('Success', 'Car Added successfully');
-  //       //     navigation.goBack();
-  //       //   })
-  //       //   .catch(err => console.log(err));
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   return (
     <View style={styles.Container}>
