@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -49,6 +49,7 @@ const STYLES = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 15,
     borderColor: '#dcdcdc',
+    color: '#000000',
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
@@ -57,6 +58,7 @@ const STYLES = StyleSheet.create({
   TextinputStyle: {
     marginLeft: wp('2.1%'),
     fontFamily: 'Rubik-Regular',
+    color: '#000000',
     width: wp('62%'),
   },
   button: {

@@ -8,14 +8,15 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import styles from './styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+
 export default function SignUp() {
   const navigation = useNavigation();
   const [Visible, setVisible] = useState(true);
@@ -29,8 +30,10 @@ export default function SignUp() {
   const [Password, setPassword] = useState('');
   const [Username, setUsername] = useState('');
 
-  console.log(Password);
+  //console.log(Password);
   const SignUp = async () => {
+    console.log('Here')
+    console.log(Email, Password)
     let emailreg =
       /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([\t]*\r\n)?[\t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([\t]*\r\n)?[\t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
     if (Username == '') {
@@ -75,7 +78,7 @@ export default function SignUp() {
         showsVerticalScrollIndicator={false}>
         <View style={styles.backView}>
           <TouchableOpacity
-            style={{paddingHorizontal: '2%'}}
+            style={{ paddingHorizontal: '2%' }}
             onPress={() => {
               navigation.navigate('SignIn');
             }}>
@@ -96,9 +99,9 @@ export default function SignUp() {
         <View style={styles.TextContainer}>
           <Text style={styles.forget}>SignUp</Text>
         </View>
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <View style={styles.TextInput}>
-            <View style={{marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Image
                 style={styles.person}
                 source={require('../../../src/assets/images/person.png')}
@@ -119,9 +122,9 @@ export default function SignUp() {
         {checkusername ? (
           <Text style={styles.errortxt}>{usernamerror}</Text>
         ) : null}
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <View style={styles.TextInput}>
-            <View style={{marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Image
                 style={styles.email}
                 source={require('../../../src/assets/images/email.png')}
@@ -140,9 +143,9 @@ export default function SignUp() {
           </View>
         </View>
         {checkemail ? <Text style={styles.errortxt}>{emailerror}</Text> : null}
-        <View style={{alignItems: 'center'}}>
+        <View style={{ alignItems: 'center' }}>
           <View style={styles.TextInput}>
-            <View style={{marginLeft: 10}}>
+            <View style={{ marginLeft: 10 }}>
               <Image
                 style={styles.lock}
                 source={require('../../../src/assets/images/lock.png')}
@@ -171,7 +174,7 @@ export default function SignUp() {
         {checkpassword ? (
           <Text style={styles.errortxt}>{passworderror}</Text>
         ) : null}
-        <View style={{alignItems: 'center', marginTop: hp('19%')}}>
+        <View style={{ alignItems: 'center', marginTop: hp('19%') }}>
           <TouchableOpacity onPress={() => SignUp()} style={styles.button}>
             <Text style={styles.signup}>Sign Up</Text>
           </TouchableOpacity>
